@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
+    private Shoot shooter;
 
 
     [SerializeField] float jumpForce;
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        shooter = GetComponent<Shoot>();
     }
 
     
@@ -61,6 +63,11 @@ public class PlayerMovement : MonoBehaviour
         else 
         {
             anim.SetBool("IsRun", false);
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            shooter.Shooter(horizontal);
         }
 
     }
