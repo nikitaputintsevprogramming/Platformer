@@ -4,19 +4,12 @@ using UnityEngine;
 
 public class TakeCoin : MonoBehaviour
 {
-    [SerializeField] private int coins;
+    [SerializeField] private CountCoin countCoin;
     [SerializeField] private ParticleSystem burst;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        countCoin = FindObjectOfType<CountCoin>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -24,8 +17,7 @@ public class TakeCoin : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             burst.Play();
-            coins++;
-            print("Coins " + coins);
+            countCoin.count++;          
             Destroy(gameObject, 0.3f);
         }
     }

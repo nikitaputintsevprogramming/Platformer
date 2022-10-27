@@ -75,6 +75,6 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 overlapCircle = playerCollider.position;
-        isGrounded = Physics2D.OverlapCircle(overlapCircle, jumpOffset, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(overlapCircle, jumpOffset, groundLayer);        
     }
 }

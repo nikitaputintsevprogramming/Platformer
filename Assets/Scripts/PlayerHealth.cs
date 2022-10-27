@@ -1,44 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    private Animator anim;
-    [SerializeField] private int PlayerHealthCount;
 
-    // Start is called before the first frame update
+    [SerializeField] private Image[] hearts;
+    [SerializeField] private GameObject diePanel;
+    [SerializeField] private AudioSource cameraSound;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     void Start()
     {
+        Time.timeScale = 1;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        PlayerHealthCount = 5;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(gameObject.transform.position.y <= -1.5f || PlayerHealthCount <= 0)
+        timer += Time.deltaTime;
+        if (i >= 5 || gameObject.transform.position.y <= -1.5f)
         {
+            diePanel.SetActive(true);
+            cameraSound.Stop();
             spriteRenderer.enabled = false;
-            print("Player is dead");            
+            Time.timeScale = 0;
+            foreach (var heart in hearts)
+            {
+                heart.gameObject.SetActive(false);
+            }
+            print("death");
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private float timer = 0;
+    private int i = 0;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(other.gameObject.tag == "Enemy")
+
+        if (collision.CompareTag("Enemy"))
         {
-            anim.SetTrigger("IsHurt");
-            PlayerHealthCount--; // PlayerHealthCount = PlayerHealthCount - 1
+            print(collision.CompareTag("Enemy").ToString());
+            if (timer >= 3)
+            {
+                if (i <= 4)
+                {
+                    
+                    hearts[i + 1].GetComponent<AudioSource>().Play();
+                    hearts[i].gameObject.SetActive(false);
+                    GetComponent<Animator>().SetTrigger("IsHurt");
+                    timer = 0;
+                    i++;
+                }
+
+                if (i > 4)
+                {
+                    i++;
+                }
+
+            }
+            else
+            {
+                GetComponent<Animator>().SetTrigger("IsIdle");
+            }
+
         }
 
-        if(other.gameObject.tag == "Health")
+        if (collision.tag == "Health")
         {
-            PlayerHealthCount++;
-            print("Health + 1");
-            Destroy(other.gameObject);
+            if (i > 0)
+            {
+                hearts[i - 1].gameObject.SetActive(true);
+                i--;
+                Destroy(collision.gameObject);
+            }
         }
     }
 }
