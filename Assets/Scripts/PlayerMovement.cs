@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator anim;
     private Shoot shooter;
-
+    private AudioSource jumpSound;
 
     [SerializeField] float jumpForce;
     [SerializeField] bool isGrounded = false;
@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         shooter = GetComponent<Shoot>();
+        jumpSound = GetComponent<AudioSource>();
     }
 
     
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
                 anim.SetTrigger("IsJump");
+                jumpSound.Play();
             }
             else
             {

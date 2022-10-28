@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [SerializeField] private AudioSource DeathSound;
+    [SerializeField] Animator anim;
     [SerializeField] int currentHealth;
     public int maxHealth = 3;
     private EnemyMove enemyMove;
-
-    [SerializeField] Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
         enemyMove = GetComponent<EnemyMove>();
         anim = GetComponent<Animator>();
+        DeathSound = GetComponent<AudioSource>();
     }
 
     public void Damage(int damage)
@@ -31,8 +32,10 @@ public class EnemyHealth : MonoBehaviour
         if(currentHealth <= 0)
         {
             enemyMove.speed = 0;
+            DeathSound.Play();
             anim.SetTrigger("Dead");
             Destroy(gameObject, 0.5f);
+
         }
     }
 }
