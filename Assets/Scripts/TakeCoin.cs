@@ -7,26 +7,15 @@ public class TakeCoin : MonoBehaviour
     [SerializeField] private int coins;
     [SerializeField] private ParticleSystem burst;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // Когда игрока касается чего либо проверяем объект на тег Coin
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Player"))
-        {
+        if(other.gameObject.tag == "Coin")
+        {            
             burst.Play();
             coins++;
             print("Coins " + coins);
-            Destroy(gameObject, 0.3f);
+            Destroy(other.gameObject, 0.3f);
         }
     }
 }
